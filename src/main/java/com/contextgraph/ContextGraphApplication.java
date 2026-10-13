@@ -1,0 +1,1 @@
+package com.contextgraph; import org.springframework.boot.SpringApplication; import org.springframework.boot.autoconfigure.SpringBootApplication; @SpringBootApplication public class ContextGraphApplication { public static void main(String[] args){SpringApplication.run(ContextGraphApplication.class,args);} }

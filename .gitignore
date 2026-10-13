@@ -1,0 +1,9 @@
+target/
+.idea/
+.vscode/
+*.iml
+.env
+storage/*
+!storage/.gitkeep
+*.log
+.env*

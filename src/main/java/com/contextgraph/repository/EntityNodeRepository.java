@@ -1,0 +1,1 @@
+package com.contextgraph.repository; import com.contextgraph.model.EntityNode; import org.springframework.data.jpa.repository.JpaRepository; import java.util.List; public interface EntityNodeRepository extends JpaRepository<EntityNode,Long>{List<EntityNode> findByOwnerId(Long ownerId);}

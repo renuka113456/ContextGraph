@@ -1,0 +1,1 @@
+package com.contextgraph.config; import org.springframework.beans.factory.annotation.Value; import org.springframework.context.annotation.Configuration; import java.io.IOException; import java.nio.file.*; @Configuration public class StorageConfig { public StorageConfig(@Value("${app.storage.local-dir}")String d)throws IOException{Files.createDirectories(Path.of(d));}}

@@ -1,0 +1,1 @@
+package com.contextgraph.dto; import java.time.LocalDateTime; import java.util.List; public final class SearchDtos{private SearchDtos(){} public record SearchResult(Long id,String name,String type,String topic,double score,List<String> reasons,LocalDateTime createdAt){}}

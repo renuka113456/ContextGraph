@@ -1,0 +1,1 @@
+package com.contextgraph.repository; import com.contextgraph.model.GraphRelation; import org.springframework.data.jpa.repository.JpaRepository; import java.util.List; public interface GraphRelationRepository extends JpaRepository<GraphRelation,Long>{List<GraphRelation> findAllBySourceNodeIdOrTargetNodeId(Long a,Long b);}

@@ -1,0 +1,1 @@
+package com.contextgraph.service; import org.apache.tika.Tika; import org.springframework.stereotype.Service; import org.springframework.web.multipart.MultipartFile; @Service public class DocumentExtractionService{final Tika tika=new Tika();public String extractText(MultipartFile f)throws Exception{return tika.parseToString(f.getInputStream()).trim();}}

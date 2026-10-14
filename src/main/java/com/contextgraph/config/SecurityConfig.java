@@ -21,31 +21,46 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter filter;
 
-    public SecurityConfig(JwtAuthenticationFilter f) {
-        this.filter = f;
+    public SecurityConfig(JwtAuthenticationFilter filter) {
+        this.filter = filter;
     }
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http,
+            CorsConfigurationSource corsConfigurationSource
+    ) throws Exception {
+
         return http
                 .csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.configurationSource(cors()))
+                .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                        session.sessionCreationPolicy(
+                                SessionCreationPolicy.STATELESS
+                        )
+                )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/api/health").permitAll()
-                        .anyRequest().authenticated())
-                .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
+                        .requestMatchers(
+                                "/api/auth/**",
+                                "/api/health"
+                        ).permitAll()
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(
+                        filter,
+                        UsernamePasswordAuthenticationFilter.class
+                )
                 .build();
     }
 
     @Bean
-    CorsConfigurationSource cors() {
+    public CorsConfigurationSource corsConfigurationSource() {
+
         CorsConfiguration config = new CorsConfiguration();
 
         String origins = System.getenv().getOrDefault(
                 "CORS_ALLOWED_ORIGINS",
-                "http://localhost:5173"
+                "http://localhost:5173,https://context-graph-frontend.vercel.app"
         );
 
         List<String> allowedOrigins = Arrays.stream(origins.split(","))
@@ -54,11 +69,19 @@ public class SecurityConfig {
                 .toList();
 
         config.setAllowedOrigins(allowedOrigins);
+
         config.setAllowedMethods(Arrays.asList(
-                "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"
+                "GET",
+                "POST",
+                "PUT",
+                "PATCH",
+                "DELETE",
+                "OPTIONS"
         ));
+
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
+        config.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();
@@ -69,7 +92,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
